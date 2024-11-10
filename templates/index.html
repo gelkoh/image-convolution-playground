@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<title>Image Convolution Playground</title>
+<script src="../static/script.js" type="text/javascript" async defer></script>
+<link href="../static/style.css" rel="stylesheet" />
+
+<h1>Image Convolution Playground</h1>
+
+<h3>Input Image</h3>
+
+<img src="../static/default-img.jpg" />
+
+<h3>Kernel</h3>
+
+<form method="POST" id="kernelSelectForm">
+    <select id="kernelSelect" name="kernel">
+        {% for kernel in predefined_kernels %}
+            <option value="{{ kernel }}">{{ kernel }}</option>
+        {% endfor %}
+    </select>
+
+    <input type="submit" value="Apply" />
+</form>
+
+<h3>Output Image</h3>
+
+{% if img_data %}
+    <!-- Convolved/filtered image -->
+    <img src="data:image/jpeg;base64,{{ img_data }}" id="outputImg">
+{% else %}
+    <!-- Original image -->
+    <img src="../static/default-img.jpg" id="outputImg">
+{% endif %}
