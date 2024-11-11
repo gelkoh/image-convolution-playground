@@ -67,8 +67,14 @@ def process():
     img_pixels = img_pixels.astype(np.int32)
 
     # Get selected kernel
-    selected_kernel_name = request.get_json().get("kernel")
-    selected_kernel = PREDEFINED_KERNELS[selected_kernel_name]
+    selected_kernel_name = request.get_json().get("selectedKernelName")
+
+    selected_kernel = None
+
+    if selected_kernel_name == "CUSTOM":
+        selected_kernel = request.get_json().get("customKernelValues")
+    else:
+        selected_kernel = PREDEFINED_KERNELS[selected_kernel_name]
 
     # Flip the kernel
     selected_kernel = np.flip(selected_kernel)
