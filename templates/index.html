@@ -19,6 +19,8 @@
         {% for predefined_kernel_name in predefined_kernels_names %}
             <option value="{{ predefined_kernel_name }}">{{ predefined_kernel_name }}</option>
         {% endfor %}
+
+        <option value="CUSTOM">CUSTOM</option>
     </select>
 
     <input type="submit" value="Apply" />
