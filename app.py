@@ -1,6 +1,7 @@
 import base64
 import sys
 from io import BytesIO
+import json
 from flask import Flask, request, render_template, jsonify, url_for
 from PIL import Image
 import numpy as np
@@ -37,7 +38,22 @@ PREDEFINED_KERNELS = {
 # Initially render the template when visiting the site
 @app.route("/")
 def run():
-    return render_template("index.html", predefined_kernels=PREDEFINED_KERNELS)
+    predefined_kernels_names = []
+
+    for kernel_name in PREDEFINED_KERNELS:
+        predefined_kernels_names.append(kernel_name)
+
+    predefined_kernels_json = {
+        key: kernel.tolist() for key, kernel in PREDEFINED_KERNELS.items()
+    }
+
+    predefined_kernels_json = json.dumps(predefined_kernels_json)
+
+    return render_template(
+        "index.html",
+        predefined_kernels_names=predefined_kernels_names,
+        predefined_kernels_json=predefined_kernels_json
+    )
 
 # Process convolution when sending a POST request
 @app.post("/")
@@ -59,8 +75,8 @@ def process():
 
     # Apply kernel
     convolved_img_pixels = scipy.ndimage.convolve(
-        img_pixels, 
-        selected_kernel[:, :, np.newaxis], 
+        img_pixels,
+        selected_kernel[:, :, np.newaxis],
         mode="nearest"
     )
 
