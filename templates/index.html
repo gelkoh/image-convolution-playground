@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <title>Image Convolution Playground</title>
+<script type="text/javascript">
+    const predefinedKernels = {{ predefined_kernels_json | tojson }}
+</script>
 <script src="../static/script.js" type="text/javascript" async defer></script>
 <link href="../static/style.css" rel="stylesheet" />
 
@@ -13,13 +16,15 @@
 
 <form method="POST" id="kernelSelectForm">
     <select id="kernelSelect" name="kernel">
-        {% for kernel in predefined_kernels %}
-            <option value="{{ kernel }}">{{ kernel }}</option>
+        {% for predefined_kernel_name in predefined_kernels_names %}
+            <option value="{{ predefined_kernel_name }}">{{ predefined_kernel_name }}</option>
         {% endfor %}
     </select>
 
     <input type="submit" value="Apply" />
 </form>
+
+<table id="kernelDisplay"></table>
 
 <h3>Output Image</h3>
 
