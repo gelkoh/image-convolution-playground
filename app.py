@@ -58,9 +58,23 @@ def run():
 # Process convolution when sending a POST request
 @app.post("/")
 def process():
-    # Get default image
-    img = Image.open("./static/default-img.jpg")
-    img_mode = img.mode
+    img = None
+
+    # Handle whether to use default or uploaded image
+    if request.get_json().get("customImg"):
+        custom_img_data = request.get_json().get("customImg")
+
+        # Retrieve base64 string from image url
+        base64_data = custom_img_data.split(",")[1]
+
+        # Decode the base64 data
+        image_data = base64.b64decode(base64_data)
+
+        # Load the image data into Pillow for further processing
+        img = Image.open(BytesIO(image_data))
+    else:
+        img = Image.open("./static/default-img.jpg")
+
     img_pixels = np.asarray(img)
 
     # Convert to signed integer
@@ -71,6 +85,7 @@ def process():
 
     selected_kernel = None
 
+    # If custom kernel was created
     if selected_kernel_name == "CUSTOM":
         selected_kernel = request.get_json().get("customKernelValues")
     else:
@@ -94,7 +109,7 @@ def process():
     convolved_img_pixels = np.clip(convolved_img_pixels, 0, 255).astype(np.uint8)
 
     # Create a new image
-    new_img = Image.fromarray(convolved_img_pixels, img_mode)
+    new_img = Image.fromarray(convolved_img_pixels)
 
     # Encode image to a data url
     buffered = BytesIO()
