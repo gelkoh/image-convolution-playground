@@ -5,7 +5,32 @@ const predefinedKernelsObj = JSON.parse(predefinedKernels)
 const kernelSelectForm = document.getElementById("kernelSelectForm")
 const kernelSelect = document.getElementById("kernelSelect")
 const kernelDisplay = document.getElementById("kernelDisplay")
-const outputImage = document.getElementById("outputImg")
+const imgInput = document.getElementById("imgInput")
+const outputImg = document.getElementById("outputImg")
+const resetImgInputBtn = document.getElementById("resetImgInputBtn")
+
+const readUploadedImg = () => {
+    return new Promise((resolve, reject) => {
+        const uploadedImg = imgInput.files[0]
+        const reader = new FileReader()
+
+        reader.onloadend = () => resolve(reader.result)
+        reader.onerror = (error) => reject(error)
+
+        reader.readAsDataURL(uploadedImg)
+    })
+}
+
+imgInput.addEventListener("change", async () => {
+    try {
+        const imgData = await readUploadedImg()
+
+        inputImg.src = imgData
+        outputImg.src = imgData
+    } catch(error) {
+        console.error("Error reading uploaded image:", error)
+    }
+})
 
 const updateKernelDisplay = () => {
     kernelDisplay.replaceChildren()
@@ -23,8 +48,6 @@ const updateKernelDisplay = () => {
     } else {
         selectedKernelWeights = predefinedKernelsObj[selectedKernelName]
     }
-
-    // const selectedKernelWeights = predefinedKernelsObj[selectedKernelName]
 
     // Create table rows/td elements to display the kernel
     for (const row in selectedKernelWeights) {
@@ -71,21 +94,28 @@ kernelSelect.addEventListener("change", () => {
     updateKernelDisplay()
 })
 
-kernelSelectForm.addEventListener("submit", (event) => {
+kernelSelectForm.addEventListener("submit", async (event) => {
     // Prevent default action
     event.preventDefault()
 
     const formData = new FormData(kernelSelectForm)
     const selectedKernelName = formData.get("kernel")
 
-    let data
-    let customKernelValues
+    // Create a JSON object
+    const requestData = {
+        selectedKernelName: selectedKernelName
+    }
 
-    if (selectedKernelName === "CUSTOM") { 
-        customKernelValues = getKernelValues()
-        data = { selectedKernelName: selectedKernelName, customKernelValues: customKernelValues }
-    } else {
-        data = { selectedKernelName: selectedKernelName }
+    // If custom kernel is selected, get custom kernel values
+    if (selectedKernelName === "CUSTOM") {
+        requestData.customKernelValues = getKernelValues();
+    }
+
+    // If there is an uploaded image append it to the request data
+    if (imgInput.files[0]) {
+        const uploadedImg = await readUploadedImg()
+
+        requestData.customImg = uploadedImg
     }
 
     fetch("/", {
@@ -94,7 +124,7 @@ kernelSelectForm.addEventListener("submit", (event) => {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ selectedKernelName: selectedKernelName, customKernelValues: customKernelValues })
+        body: JSON.stringify(requestData)
     })
     .then(response => response.json())
     .then(data => {
