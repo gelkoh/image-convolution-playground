@@ -8,6 +8,7 @@ const kernelDisplay = document.getElementById("kernelDisplay")
 const imgInput = document.getElementById("imgInput")
 const outputImg = document.getElementById("outputImg")
 const resetImgInputBtn = document.getElementById("resetImgInputBtn")
+const imgInputBtn = document.getElementById("imgInputBtn")
 
 const readUploadedImg = () => {
     return new Promise((resolve, reject) => {
@@ -20,6 +21,10 @@ const readUploadedImg = () => {
         reader.readAsDataURL(uploadedImg)
     })
 }
+
+imgInputBtn.addEventListener("click", () => {
+    imgInput.click()
+})
 
 imgInput.addEventListener("change", async () => {
     try {
