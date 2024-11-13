@@ -6,36 +6,80 @@
 <script src="../static/script.js" type="text/javascript" async defer></script>
 <link href="../static/style.css" rel="stylesheet" />
 
-<h1>Image Convolution Playground</h1>
+<header>
+    <h1>Image Convolution Playground</h1>
 
-<h3>Input Image</h3>
+    <a 
+        href="https://github.com/gelkoh/image-convolution-playground"
+        class="source-code-link" 
+    >
+        <img src="../static/github-mark-white.svg" class="github-icon" /> 
+        Source Code
+    </a>
+</header>
 
-<input type="file" id="imgInput" />
+<section class="images-section">
+    <div>
+        <div class="title-container">
+            <h3>Input Image</h3>
+        </div>
 
-<img src="../static/default-img.jpg" id="inputImg" />
+        <div class="content-container">
+            <img src="../static/default-img.jpg" id="inputImg" />
+        </div>
 
-<h3>Kernel</h3>
+        <div class="btn-container">
+            <button type="button" id="imgInputBtn">Upload image</button>
+        </div>
+        <input type="file" id="imgInput" />
+    </div>
 
-<form method="POST" id="kernelSelectForm">
-    <select id="kernelSelect" name="kernel">
-        {% for predefined_kernel_name in predefined_kernels_names %}
-            <option value="{{ predefined_kernel_name }}">{{ predefined_kernel_name }}</option>
-        {% endfor %}
+    <div>
+        <div class="title-container">
+            <h3>Output Image</h3>
+        </div>
 
-        <option value="CUSTOM">CUSTOM</option>
-    </select>
+        <div class="content-container">
+            {% if img_data %}
+            <!-- Convolved/filtered image -->
+            <img src="data:image/jpeg;base64,{{ img_data }}" id="outputImg">
+            {% else %}
+            <!-- Original image -->
+            <img src="../static/default-img.jpg" id="outputImg">
+            {% endif %}
+        </div>
 
-    <input type="submit" value="Apply" />
-</form>
+        <div class="btn-container">
+            <button type="button" id="downloadImgBtn">
+                Download image
+            </button>
+        </div>
+    </div>
+</section>
 
-<table id="kernelDisplay"></table>
 
-<h3>Output Image</h3>
+<section class="kernel-select-section">
+    <form method="POST" id="kernelSelectForm">
+        <div class="title-container">
+            <h3>Kernel</h3>
 
-{% if img_data %}
-    <!-- Convolved/filtered image -->
-    <img src="data:image/jpeg;base64,{{ img_data }}" id="outputImg">
-{% else %}
-    <!-- Original image -->
-    <img src="../static/default-img.jpg" id="outputImg">
-{% endif %}
+            <select id="kernelSelect" name="kernel">
+                {% for predefined_kernel_name in predefined_kernels_names %}
+                    <option value="{{ predefined_kernel_name }}">{{ predefined_kernel_name }}</option>
+                {% endfor %}
+
+                <option value="CUSTOM">CUSTOM</option>
+            </select>
+        </div>
+
+        <div class="content-container">
+            <div class="table-wrapper">
+                <table id="kernelDisplay"></table>
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <button type="submit">Apply</button>
+        </div>
+    </form>
+</section>
