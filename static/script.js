@@ -1,7 +1,7 @@
 // Convert JSON string to object
 const predefinedKernelsObj = JSON.parse(predefinedKernels)
 
-// Select the form to select filters
+// Select DOM elements
 const kernelSelectForm = document.getElementById("kernelSelectForm")
 const kernelSelect = document.getElementById("kernelSelect")
 const kernelDisplay = document.getElementById("kernelDisplay")
@@ -9,6 +9,7 @@ const imgInput = document.getElementById("imgInput")
 const outputImg = document.getElementById("outputImg")
 const resetImgInputBtn = document.getElementById("resetImgInputBtn")
 const imgInputBtn = document.getElementById("imgInputBtn")
+const downloadImgBtn = document.getElementById("downloadImgBtn") 
 
 const readUploadedImg = () => {
     return new Promise((resolve, reject) => {
@@ -136,4 +137,17 @@ kernelSelectForm.addEventListener("submit", async (event) => {
             outputImg.src = "data:image/jpeg;base64," + data.img_data
         })
     .catch(error => console.error("Error:", error))
+})
+
+// On download button click create and click temporary download link
+downloadImgBtn.addEventListener("click", () => {
+    const downloadLink = document.createElement("a")    
+
+    downloadLink.href = outputImg.src
+    downloadLink.download = "output"
+
+    document.body.appendChild(downloadLink)
+
+    downloadLink.click()
+    downloadLink.remove()
 })
