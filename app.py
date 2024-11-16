@@ -94,11 +94,14 @@ def process():
     # Flip the kernel
     selected_kernel = np.flip(selected_kernel)
 
+    # Get selected edge handling mode
+    selected_edge_handling_mode = request.get_json().get("selectedEdgeHandlingMode")
+
     # Apply kernel
     convolved_img_pixels = scipy.ndimage.convolve(
         img_pixels,
         selected_kernel[:, :, np.newaxis],
-        mode="nearest"
+        mode=selected_edge_handling_mode
     )
 
     # If selected kernel is the edge detection kernel shift all values by 128
