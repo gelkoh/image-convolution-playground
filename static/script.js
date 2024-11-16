@@ -2,8 +2,9 @@
 const predefinedKernelsObj = JSON.parse(predefinedKernels)
 
 // Select DOM elements
-const kernelSelectForm = document.getElementById("kernelSelectForm")
+const convolutionSettingsForm = document.getElementById("convolutionSettingsForm")
 const kernelSelect = document.getElementById("kernelSelect")
+const edgeHandlingModeSelect = document.getElementById("edgeHandlingModeSelect")
 const kernelDisplay = document.getElementById("kernelDisplay")
 const imgInput = document.getElementById("imgInput")
 const outputImg = document.getElementById("outputImg")
@@ -100,16 +101,18 @@ kernelSelect.addEventListener("change", () => {
     updateKernelDisplay()
 })
 
-kernelSelectForm.addEventListener("submit", async (event) => {
+convolutionSettingsForm.addEventListener("submit", async (event) => {
     // Prevent default action
     event.preventDefault()
 
-    const formData = new FormData(kernelSelectForm)
+    const formData = new FormData(convolutionSettingsForm)
     const selectedKernelName = formData.get("kernel")
+    const selectedEdgeHandlingMode = formData.get("edgeHandlingMode")
 
     // Create a JSON object
     const requestData = {
-        selectedKernelName: selectedKernelName
+        selectedKernelName: selectedKernelName,
+	selectedEdgeHandlingMode: selectedEdgeHandlingMode
     }
 
     // If custom kernel is selected, get custom kernel values
