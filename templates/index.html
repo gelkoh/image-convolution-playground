@@ -59,7 +59,7 @@
 
 
 <section class="kernel-select-section">
-    <form method="POST" id="kernelSelectForm">
+    <form method="POST" id="convolutionSettingsForm">
         <div class="title-container">
             <h3>Kernel</h3>
 
@@ -70,6 +70,14 @@
 
                 <option value="CUSTOM">CUSTOM</option>
             </select>
+
+	    <select id="edgeHandlingMode" name="edgeHandlingMode">
+		<option value="reflect">Reflect</option>	
+		<option value="constant">Constant</option>	
+		<option value="nearest">Nearest</option>	
+		<option value="mirror">Mirror</option>	
+		<option value="wrap">Wrap</option>	
+	    </select>
         </div>
 
         <div class="content-container">
