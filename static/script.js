@@ -108,11 +108,15 @@ convolutionSettingsForm.addEventListener("submit", async (event) => {
     const formData = new FormData(convolutionSettingsForm)
     const selectedKernelName = formData.get("kernel")
     const selectedEdgeHandlingMode = formData.get("edgeHandlingMode")
+    const applyGrayscale = formData.get("applyGrayscale")
+    console.log(applyGrayscale === "on" ? true : false)
 
     // Create a JSON object
     const requestData = {
         selectedKernelName: selectedKernelName,
-	selectedEdgeHandlingMode: selectedEdgeHandlingMode
+        selectedEdgeHandlingMode: selectedEdgeHandlingMode,
+        applyGrayscale: applyGrayscale,
+        applyGrayscale: applyGrayscale === "on" ? true : false
     }
 
     // If custom kernel is selected, get custom kernel values
