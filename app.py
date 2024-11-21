@@ -75,6 +75,12 @@ def process():
     else:
         img = Image.open("./static/default-img.jpg")
 
+    # If image should be converted to grayscale before processing
+    apply_grayscale = request.get_json().get("applyGrayscale")
+
+    if apply_grayscale:
+        img = img.convert("L")
+
     img_pixels = np.asarray(img)
 
     # Convert to signed integer
@@ -97,10 +103,15 @@ def process():
     # Get selected edge handling mode
     selected_edge_handling_mode = request.get_json().get("selectedEdgeHandlingMode")
 
+    convolved_img_pixels = np.array([], dtype=np.int8)
+
     # Apply kernel
+    if not apply_grayscale:
+        selected_kernel = selected_kernel[:, :, np.newaxis]
+
     convolved_img_pixels = scipy.ndimage.convolve(
         img_pixels,
-        selected_kernel[:, :, np.newaxis],
+        selected_kernel,
         mode=selected_edge_handling_mode
     )
 
