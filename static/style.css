@@ -117,26 +117,42 @@ header .github-icon {
     border-radius: 0.25rem;
 }
 
+.kernel-select-section .dimension-settings {
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--clr-border);
+    background: var(--clr-neutral-200);
+}
+
+.kernel-select-section .dimension-settings input {
+    background: none;
+    color: white;
+    width: 2rem;
+}
+
 #kernelDisplay {
     border-collapse: collapse;
 }
+
+#kernelDisplay td {
+    border-right: 1px solid var(--clr-border);
+    border-bottom: 1px solid var(--clr-border);
+}
+
+#kernelDisplay tr td:last-of-type {
+    border-right: none;
+}
+
+#kernelDisplay tr:last-of-type td {
+    border-bottom: none;
+}
+
 
 #kernelDisplay input {
     width: 4rem;
     aspect-ratio: 1;
     text-align: center;
     color: white;
-    border-right: 1px solid var(--clr-border);
-    border-bottom: 1px solid var(--clr-border);
     background: var(--clr-neutral-200);
-}
-
-#kernelDisplay tr input:last-of-type {
-    border-right: none;
-}
-
-#kernelDisplay tr:last-of-type input {
-    border-bottom: none;
 }
 
 /* Overall */
